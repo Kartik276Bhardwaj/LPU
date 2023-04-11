@@ -1,0 +1,25 @@
+import java.util.*;
+import java.sql.*;
+
+class Main{
+    public static void main(String[] args) {
+        Scanner sc= new Scanner(System.in);
+        int costPerMinute= 1;   // in rupees, let's say
+        System.out.println("Enter ");
+        System.out.println("1 for admin rights");
+        System.out.println("2 for customer rights");
+        System.out.println("0 to exit");
+        int c= sc.nextInt();
+        if(c==0){
+            System.out.println("Program Terminated");
+            sc.close();
+            return;
+        }else{
+            if(c==1){
+                // admin login
+                System.out.print("Enter Password: ");
+                if(!"admin".equals(sc.next())){
+                    System.out.println("Wrong Password");
+                    sc.close();
+                    return;
+                }
