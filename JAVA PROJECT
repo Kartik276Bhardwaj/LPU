@@ -23,3 +23,138 @@ class Main{
                     sc.close();
                     return;
                 }
+                // admin's choice
+                System.out.println("Enter");
+                System.out.println("1 to add a new car");
+                System.out.println("2 to remove a car");
+                System.out.println("0 to exit");
+                c= sc.nextInt();
+                if(c==0){
+                    System.out.println("Program Terminated");
+                    sc.close();
+                        return;
+                }else if(c==1){
+                    // add a new car
+                    String regNo, chasisNo, manufacturer, model;
+                    int seats;
+                    // taking input for values to insert to table
+                    System.out.println("Enter the Registration Number(without spaces)");
+                    regNo= sc.next();
+                    System.out.println("Enter the Chasis Number(without spaces)");
+                    chasisNo= sc.next();
+                    System.out.println("Enter the Manufacturer Company");
+                    sc.nextLine();
+                    manufacturer= sc.nextLine();
+                    System.out.println("Enter the Model");
+                    model= sc.nextLine();
+                    System.out.println("Enter the Number of seats");
+                    seats= sc.nextInt();
+                    System.out.println(regNo+" "+chasisNo+" "+" "+manufacturer+" "+model+" "+seats);
+                    SQLHandler.addToCars(regNo, chasisNo, manufacturer, model, seats);
+                    // System.out.println("Press any key to see all the cars");
+                    // sc.next();
+                    // printTable(SQLHandler.showTable("car"));
+                }else if(c==2){
+                    // remove a car
+                    System.out.println("You have the following cars");
+                    printTable(SQLHandler.showTable("car"));
+                    System.out.println("Enter the Registration Number(without spaces)");
+                    String rm= sc.next();
+                    SQLHandler.removeFromCars(rm);
+                    // System.out.println("Press any key to see all the cars");
+                    // sc.next();
+                    // printTable(SQLHandler.showTable("car"));
+                }else{
+                    System.out.println("Invalid Input");
+                }
+            }else if(c==2){
+                // customer login
+                System.out.println("Enter");
+                System.out.println("1 if Existing Customer (Login)");
+                System.out.println("2 if New Customer (Signup)");
+                c= sc.nextInt();
+                String licence="";
+                if(c==0){
+                    System.out.println("Program Terminated");
+                    sc.close();
+                    return;
+                }else if(c==1){
+                    // login form
+                    String pass;
+                    System.out.println("Enter the Licence");
+                    licence= sc.next();
+                    System.out.println("Enter the Password");
+                    pass= sc.next();
+                    if(!SQLHandler.validUser(licence, pass)){
+                        System.out.println("Wrong Password, please try again");
+                        sc.close();
+                        return;
+                    }
+                }else if(c==2){
+                    // sign-up form
+                    // name, age, gender, licence, contact no, emergency contact no, password
+                    System.out.println("Enter Your Name");
+                    sc.nextLine();
+                    String name= sc.nextLine();
+                    System.out.println("Enter your Age");
+                    int age= sc.nextInt();
+                    System.out.println("Enter your Gender(MALE/FEMALE)");
+                    String gender= sc.next();
+                    System.out.println("Enter your Licence");
+                    licence= sc.next();
+                    System.out.println("Enter your Contact Number");
+                    long contact= sc.nextLong();
+                    System.out.println("Enter your Emergency Contact Number");
+                    long emergencyContact= sc.nextLong();
+                    System.out.println("Enter your Password");
+                    String pass= sc.next();
+                    System.out.println("Re-Enter the Password");
+                    String dupPass= sc.next();
+                    if(pass.equals(dupPass)){
+                        SQLHandler.signUp(name, age, gender, licence, contact, emergencyContact, pass);
+                    }else{
+                        System.out.println("Passwords didn't match, please try again");
+                        sc.close();
+                        return;
+                    }
+                }
+                // book/relieve cars
+                System.out.println("Enter");
+                System.out.println("1 to book a car");
+                System.out.println("2 to releive a car");
+                System.out.println("0 to exit");
+                System.out.println("The Rent Per minute is "+costPerMinute+" Rupees");
+                c= sc.nextInt();
+                if(c==0){
+                    System.out.println("Program Terminated");
+                    sc.close();
+                    return;
+                }else if(c==1){
+                    // book a car
+                    printTable(SQLHandler.showAvailiableCars());
+                    System.out.println("Enter the Reg.No of car you want to rent");
+                    String reg= sc.next();
+                    SQLHandler.addToRent(reg, licence);
+                }else if(c==2){
+                    // relive a car
+                    System.out.println("Enter the Registration number of car you want to relieve");
+                    String reg= sc.next();
+                    long bill= (long)costPerMinute * SQLHandler.releiveCar(reg, licence);
+                    System.out.println("Bill you have to pay is "+bill);
+                }else{
+                    System.out.println("Invalid Input");
+                }
+            }else{
+                System.out.println("Invalid Input");
+            }
+        }
+        System.out.println("Thanks for using our service");
+        sc.close();
+    }
+    static void printTable(ArrayList<String> table){
+        int n= table.size();
+        for(int i=0; i<n; i++){
+            System.out.println(table.get(i));
+        }
+    }
+}
